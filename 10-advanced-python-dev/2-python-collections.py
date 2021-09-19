@@ -44,6 +44,7 @@ for coworker, place in coworkers:
 
 print(coworker_alma_maters['John'])
 print(coworker_alma_maters['Anne'])  # []
+print("\n")
 
 
 """
@@ -66,3 +67,121 @@ for person, company in other_coworkers:
 
 print(coworker_companies['Jen'])  # AWESOME TEK
 print(coworker_companies['Rick'])  # Apple Inc.
+
+
+"""
+If you want to change the default value in a `defaultdict`, just change its `default_factory` property:
+"""
+
+from collections import defaultdict
+
+int_dict = defaultdict(int)
+
+int_dict['first'] += 1
+print(int_dict['first'])  # 1
+
+int_dict.default_factory = list
+int_dict['second'].append('Jack')
+print(int_dict['second'])  # ['Jack']
+
+int_dict.default_factory = None  # this is back to being a "normal dictionary"
+
+
+## OrderedDict
+
+from collections import OrderedDict
+
+o = OrderedDict()
+o['John'] = 6
+o['Dan'] = 10
+o['Brent'] = 3
+print("\n")
+print(o)  # keys are always in the order in which they were inserted
+
+o.move_to_end('John')
+o.move_to_end('Dan', last=False)
+
+print(o)
+
+o.popitem()
+
+print(o)
+
+
+## namedtuple
+"""
+A namedtuple is another object that we can use like a tuple, where each of the elements of the tuple has a name. In addition, the tuple itself also has a name.
+
+It improves on tuples by making more explicit what it means.
+
+Take this as an example using normal tuples:
+"""
+
+account = ('checking', 1850.90)
+
+print(account[0])  # name
+print(account[1])  # balance
+
+
+"""
+Or, the explicitness of `namedtuple`:
+"""
+
+from collections import namedtuple
+
+Account = namedtuple('Account', ['name', 'balance'])
+account = Account('checking', 1850.90)
+print(account.name)
+print(account.balance)
+
+"""
+I like to think of it very much like defining a class (where `Account` is the class or the type). However, remember it’s not quite the same, and a `namedtuple` is still a tuple after all.
+
+You can do things like these:
+"""
+
+name, balance = account  # tuple destructuring
+print(name)
+print(balance)
+
+Account('checking', balance=1850.90)  # use positional or named arguments
+Account._make(('checking', 1850.90))
+
+
+accounts = [
+    ('checking', 1850.90),
+    ('savings', 3658.00),
+    ('credit', -450.00)
+]
+
+account_tuples = map(Account._make, accounts)
+account._asdict()  # returns an OrderedDict representing the tuple
+
+print(accounts)
+
+## Deque
+"""
+`deque` stands for “Double-ended queue”.
+
+In a `deque`, we can push elements at the start or the end, and we can also remove 
+elements from the start or the end.
+
+It is very efficient, performing very well, and also it’s thread-safe 
+
+it’s like a list on which you do operations like a list:
+"""
+
+from collections import deque
+
+friends = deque(('John', 'Dan', 'Jen', 'Anna'))
+friends.append('Jose') # goes at the end
+friends.appendleft('Anthony') # goes at the beginning 
+
+print(friends)
+
+friends.pop() # remove Jose, the last item
+print(friends)
+
+friends.popleft() # remove Anthony, the first item
+print(friends)
+
