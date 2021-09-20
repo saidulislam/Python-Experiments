@@ -35,6 +35,8 @@ start = time.time()
 thread1.start()
 thread2.start()
 
+# DO NOT KILL THREADS, you will create deadlocks. Let them finish.
+
 thread1.join()
 thread2.join()
 
